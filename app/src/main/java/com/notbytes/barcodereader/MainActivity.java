@@ -29,12 +29,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         //findViewById(R.id.btn_activity).setOnClickListener(this);
         findViewById(R.id.btn_fragment).setOnClickListener(this);
+        findViewById(R.id.button4).setOnClickListener(this);
+        findViewById(R.id.button3).setOnClickListener(this);
         mTvResult = findViewById(R.id.tv_result);
         mTvResultHeader = findViewById(R.id.tv_result_head);
     }
 
-    private void addBarcodeReaderFragment() {
-        BarcodeReaderFragment readerFragment = BarcodeReaderFragment.newInstance(true, true, View.VISIBLE);
+    private void addBarcodeReaderFragment(boolean flashState) {
+        BarcodeReaderFragment readerFragment = BarcodeReaderFragment.newInstance(true, flashState, View.VISIBLE);
         readerFragment.setListener(this);
         FragmentManager supportFragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
@@ -46,7 +48,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_fragment:
-                addBarcodeReaderFragment();
+                addBarcodeReaderFragment(false);
+                break;
+
+            case R.id.button4:
+                addBarcodeReaderFragment(true);
+                break;
+            case R.id.button3:
+                Intent i = new Intent(MainActivity.this,CreditBill.class);
+                startActivity(i);
                 break;
 //            case R.id.btn_activity:
 //                FragmentManager supportFragmentManager = getSupportFragmentManager();

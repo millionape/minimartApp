@@ -28,6 +28,13 @@
             android:text="แสกนบาร์โค๊ด"
             android:textSize="36sp" />
 
+        <Button
+            android:id="@+id/button4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="เปิดแฟลช"
+            android:textSize="30sp" />
+
         <Space
             android:layout_width="match_parent"
             android:layout_height="12dp" />
@@ -36,7 +43,8 @@
             android:id="@+id/button3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="ค้นหาด้วยชื่อ"
+            android:background="#FFF59D"
+            android:text="บิลเงินเชื่อ"
             android:textSize="36sp" />
 
         <TextView

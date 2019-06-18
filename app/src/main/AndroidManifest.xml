@@ -9,7 +9,11 @@
         android:roundIcon="@drawable/ic_shopping_cart"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ProductInfoActivity"></activity>
+        <activity android:name=".OftenProduct"></activity>
+        <activity android:name=".ItemCreditList" />
+        <activity android:name=".CreditShow" />
+        <activity android:name=".CreditBill" />
+        <activity android:name=".ProductInfoActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
