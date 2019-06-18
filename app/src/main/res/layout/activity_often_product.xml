@@ -240,24 +240,61 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="LMเล็ก"
-                    android:textSize="24sp" />
+                    android:background="#724CAF50"
+                    android:text="LMเขียวเล็ก"
+                    android:textSize="18sp" />
 
                 <Button
                     android:id="@+id/c2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="LMใหญ่"
-                    android:textSize="24sp" />
+                    android:background="#E24CAF50"
+                    android:text="LMเขียวใหญ่"
+                    android:textSize="18sp" />
 
                 <Button
                     android:id="@+id/c3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="SMS"
-                    android:textSize="24sp" />
+                    android:background="#9FDD5959"
+                    android:text="LMแดงเล็ก"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/c7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="#99EC0B0B"
+                    android:text="LMแดงใหญ่"
+                    android:textSize="18sp" />
+
+                <Button
+                    android:id="@+id/c8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="#C164DD17"
+                    android:text="SMSเขียว"
+                    android:textSize="18sp" />
+
+                <Button
+                    android:id="@+id/c9"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="#DADD2C00"
+                    android:text="SMSแดง"
+                    android:textSize="18sp" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -270,6 +307,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:background="#C46210"
                     android:text="กรองทิพย์"
                     android:textSize="18sp" />
 

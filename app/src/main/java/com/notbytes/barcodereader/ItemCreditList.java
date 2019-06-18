@@ -4,14 +4,17 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.method.DigitsKeyListener;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -47,12 +50,13 @@ public class ItemCreditList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_credit_bill);
         totalText = (TextView) findViewById(R.id.totalText);
-        LinearLayout bottomBox = (LinearLayout)findViewById(R.id.bottomBox);
+        final LinearLayout bottomBox = (LinearLayout)findViewById(R.id.bottomBox);
         bottomBox.setVisibility(View.VISIBLE);
         bottomBox.setClickable(true);
+        bottomBox.bringToFront();
         listView = (ListView)findViewById(R.id.listview);
-        FloatingActionButton FAB = (FloatingActionButton)findViewById(R.id.floatingActionButton2);
-        FloatingActionButton FAB1 = (FloatingActionButton)findViewById(R.id.floatingActionButton);
+        final FloatingActionButton FAB = (FloatingActionButton)findViewById(R.id.floatingActionButton2);
+        final FloatingActionButton FAB1 = (FloatingActionButton)findViewById(R.id.floatingActionButton);
         final Button datePicker = (Button) findViewById(R.id.button5);
         topText = (TextView) findViewById(R.id.textView);
         database = FirebaseDatabase.getInstance();
@@ -72,13 +76,17 @@ public class ItemCreditList extends AppCompatActivity {
         }else{
             finish();
         }
-        myRef.child(id).child("bills").child(date).child("payState").addValueEventListener(new ValueEventListener() {
+        myRef.child(id).child("bills").child(date).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String flag = dataSnapshot.getValue(String.class);
+                String flag = dataSnapshot.child("payState").getValue(String.class);
+                String recv = dataSnapshot.child("recvMoney").getValue(String.class);
                 if(flag!=null){
                     topText.setText(topText.getText().toString()+"\n("+flag+")");
                     topText.setTextSize(TypedValue.COMPLEX_UNIT_SP,25);
+                }
+                if(recv != null){
+                    topText.setText(topText.getText().toString()+"\n(รับเงินมา :"+recv+")");
                 }
             }
 
@@ -102,29 +110,28 @@ public class ItemCreditList extends AppCompatActivity {
 
             }
         });
-        myRef.child(id).child("bills").addValueEventListener(new ValueEventListener() {
+        myRef.child(id).child("bills").child(date).child("items").addValueEventListener(new ValueEventListener() {
             Double totalSum = 0.0;
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for(DataSnapshot dat:dataSnapshot.getChildren()){
-                    names.clear();
-                    quantiy.clear();
-                    total.clear();
-                    totalSum = 0.0;
-                    for(DataSnapshot items:dat.child("items").getChildren()){
-                        CreditItemGetter tmp = items.getValue(CreditItemGetter.class);
+                names.clear();
+                quantiy.clear();
+                total.clear();
+                totalSum = 0.0;
+                for(DataSnapshot items:dataSnapshot.getChildren()){
+                    CreditItemGetter tmp = items.getValue(CreditItemGetter.class);
+                    if(tmp != null) {
                         names.add(items.getKey());
                         quantiy.add(tmp.getQuantity());
                         total.add(tmp.getTotal());
                         prices.add(tmp.getPrice());
-                        totalSum += Integer.valueOf(tmp.getTotal());
-                        //Toast.makeText(ItemCreditList.this,items.getKey(),Toast.LENGTH_SHORT).show();
+                        totalSum += Double.valueOf(tmp.getTotal());
                     }
-                    CustomAdapterCredit adapter = new CustomAdapterCredit(getApplicationContext(), names, quantiy , total);
-                    listView.setAdapter(adapter);
-                    totalText.setText(String.valueOf(totalSum));
-                    //Toast.makeText(ItemCreditList.this,dat.child("item").getKey(),Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(ItemCreditList.this,items.getKey(),Toast.LENGTH_SHORT).show();
                 }
+                CustomAdapterCredit adapter = new CustomAdapterCredit(getApplicationContext(), names, quantiy , total);
+                listView.setAdapter(adapter);
+                totalText.setText(String.valueOf(totalSum));
                 dialog.dismiss();
             }
 
@@ -137,33 +144,36 @@ public class ItemCreditList extends AppCompatActivity {
             FAB1.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(ItemCreditList.this);
-                    builder.setTitle("เช็คบิล");
-                    builder.setMessage("ใส่ชื่อคนรับเงิน");
-                    final EditText input = new EditText(ItemCreditList.this);
-                    input.setInputType(InputType.TYPE_CLASS_TEXT);
-                    builder.setView(input);
-                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            if(input.getText().toString().length()<=1){
-                                aleartDialogOpen();
-                            }else {
-                                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                                final String currentDateandTime = sdf.format(new Date());
-                                myRef.child(id).child("bills").child(date).child("payState").setValue(input.getText().toString() + currentDateandTime);
-                                finish();
-                            }
-                        }
-                    });
-                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.cancel();
-                        }
-                    });
-
-                    builder.show();
+                    LayoutInflater li = LayoutInflater.from(ItemCreditList.this);
+                    View promptsView = li.inflate(R.layout.bill_cal, null);
+                    final EditText input = (EditText) promptsView.findViewById(R.id.editText9);
+                    final EditText recvMoney = (EditText) promptsView.findViewById(R.id.editText10);
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ItemCreditList.this);
+                    alertDialogBuilder.setView(promptsView);
+                    alertDialogBuilder
+                            .setCancelable(true)
+                            .setPositiveButton("OK",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog,int did) {
+                                            if(input.getText().toString().length()<=1 && recvMoney.getText().toString().length() <=1){
+                                                aleartDialogOpen();
+                                            }else {
+                                                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                                final String currentDateandTime = sdf.format(new Date());
+                                                myRef.child(id).child("bills").child(date).child("payState").setValue(input.getText().toString() + currentDateandTime);
+                                                myRef.child(id).child("bills").child(date).child("recvMoney").setValue(recvMoney.getText().toString());
+                                                finish();
+                                            }
+                                        }
+                                    })
+                            .setNegativeButton("Cancel",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog,int id) {
+                                            dialog.cancel();
+                                        }
+                                    });
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+                    alertDialog.show();
                     return false;
                 }
             });
@@ -184,13 +194,60 @@ public class ItemCreditList extends AppCompatActivity {
                 public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
                     String itemName = names.get(i);
                     String itemPrice = prices.get(i);
-                    openDialog(itemName, Integer.valueOf(itemPrice));
+                    openDialog(itemName, Double.valueOf(itemPrice));
                     return false;
                 }
             });
+            listView.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View view, MotionEvent motionEvent) {
+                    int eventAction = motionEvent.getAction();
+                    Log.d("gun",String.valueOf(eventAction));
+                    switch (eventAction) {
+                        case MotionEvent.ACTION_MOVE:
+                            bottomBox.setVisibility(View.INVISIBLE);
+                            FAB.setVisibility(View.INVISIBLE);
+                            FAB1.setVisibility(View.INVISIBLE);
+                            Log.d("gun","MOVE");
+                            break;
+                        case MotionEvent.ACTION_UP:
+                            bottomBox.setVisibility(View.VISIBLE);
+                            FAB.setVisibility(View.VISIBLE);
+                            FAB1.setVisibility(View.VISIBLE);
+                            Log.d("gun","release");
+                            break;
+
+                    }
+                    return false;
+                }
+            });
+
         }else {
             String original = topText.getText().toString();
+            FAB.setVisibility(View.INVISIBLE);
+            FAB1.setVisibility(View.INVISIBLE);
             topText.setText(original+"\n (จ่ายแล้ว)");
+            listView.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View view, MotionEvent motionEvent) {
+                    int eventAction = motionEvent.getAction();
+                    Log.d("gun",String.valueOf(eventAction));
+                    switch (eventAction) {
+                        case MotionEvent.ACTION_MOVE:
+                            bottomBox.setVisibility(View.INVISIBLE);
+                            Log.d("gun","MOVE");
+                            break;
+                        case MotionEvent.ACTION_UP:
+                            bottomBox.setVisibility(View.VISIBLE);
+
+                            Log.d("gun","release");
+                            break;
+
+                    }
+                    return false;
+                }
+            });
+            bottomBox.setBackgroundColor(Color.parseColor("#84DE02"));
         }
 
 
@@ -216,7 +273,8 @@ public class ItemCreditList extends AppCompatActivity {
         builder.show();
 
     }
-    private void openDialog(final String pname, final int cost){
+    private void openDialog(final String pname, final Double cost){
+        //Toast.makeText(ItemCreditList.this,pname,Toast.LENGTH_SHORT).show();
         LayoutInflater li = LayoutInflater.from(ItemCreditList.this);
         View promptsView = li.inflate(R.layout.custom_dialog, null);
         final TextView dateText = (TextView) promptsView.findViewById(R.id.textView2);
@@ -255,7 +313,7 @@ public class ItemCreditList extends AppCompatActivity {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                         int quantity= Integer.valueOf(userInput.getText().toString());
-                                        int totalTmp = quantity*cost;
+                                        Double totalTmp = quantity*cost;
                                         CreditItemGetter itemTmp = new CreditItemGetter(String.valueOf(quantity),String.valueOf(totalTmp),String.valueOf(cost));
                                         myRef.child(id).child("bills").child(date).child("items").child(pname).setValue(itemTmp);
 
