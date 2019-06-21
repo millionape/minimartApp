@@ -9,7 +9,8 @@
         android:roundIcon="@drawable/ic_shopping_cart"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".OftenProduct"></activity>
+        <activity android:name=".SearchProduct"></activity>
+        <activity android:name=".OftenProduct" />
         <activity android:name=".ItemCreditList" />
         <activity android:name=".CreditShow" />
         <activity android:name=".CreditBill" />

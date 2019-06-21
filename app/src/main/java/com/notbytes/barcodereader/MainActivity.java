@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.btn_fragment).setOnClickListener(this);
         findViewById(R.id.button4).setOnClickListener(this);
         findViewById(R.id.button3).setOnClickListener(this);
+        findViewById(R.id.button6).setOnClickListener(this);
         mTvResult = findViewById(R.id.tv_result);
         mTvResultHeader = findViewById(R.id.tv_result_head);
     }
@@ -57,6 +58,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.button3:
                 Intent i = new Intent(MainActivity.this,CreditBill.class);
                 startActivity(i);
+                break;
+            case R.id.button6:
+                Intent intent = new Intent(MainActivity.this,SearchProduct.class);
+                startActivity(intent);
                 break;
 //            case R.id.btn_activity:
 //                FragmentManager supportFragmentManager = getSupportFragmentManager();

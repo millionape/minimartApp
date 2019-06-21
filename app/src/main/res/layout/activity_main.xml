@@ -35,9 +35,16 @@
             android:text="เปิดแฟลช"
             android:textSize="30sp" />
 
+        <Button
+            android:id="@+id/button6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ค้นหาด้วยชื่อ"
+            android:textSize="24sp" />
+
         <Space
             android:layout_width="match_parent"
-            android:layout_height="12dp" />
+            android:layout_height="22dp" />
 
         <Button
             android:id="@+id/button3"

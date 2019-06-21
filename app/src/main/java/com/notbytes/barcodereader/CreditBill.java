@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -39,6 +40,8 @@ public class CreditBill extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_credit_bill);
+        final FrameLayout frame = (FrameLayout) findViewById(R.id.frameLay);
+        frame.bringToFront();
         LinearLayout bottomBox = (LinearLayout)findViewById(R.id.bottomBox);
         bottomBox.setVisibility(View.GONE);
         final ListView listView = (ListView)findViewById(R.id.listview);
@@ -107,6 +110,7 @@ public class CreditBill extends AppCompatActivity {
                 CustomAdapter adapter = new CustomAdapter(getApplicationContext(), names, infos , keys);
                 listView.setAdapter(adapter);
                 dialog.dismiss();
+                frame.bringToFront();
             }
 
             @Override
@@ -166,6 +170,7 @@ public class CreditBill extends AppCompatActivity {
                 return true;
             }
         });
+        frame.bringToFront();
 
 
     }
