@@ -45,7 +45,7 @@ public class CustomAdapter extends BaseAdapter {
         TextView nameText = (TextView)view.findViewById(R.id.name);
         TextView infoText = (TextView)view.findViewById(R.id.info);
         nameText.setText(strName.get(position));
-        infoText.setText(strInfo.get(position));
+        infoText.setText("");
 
         return view;
     }

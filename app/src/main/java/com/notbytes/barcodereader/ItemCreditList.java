@@ -57,6 +57,7 @@ public class ItemCreditList extends AppCompatActivity {
         listView = (ListView)findViewById(R.id.listview);
         final FloatingActionButton FAB = (FloatingActionButton)findViewById(R.id.floatingActionButton2);
         final FloatingActionButton FAB1 = (FloatingActionButton)findViewById(R.id.floatingActionButton);
+        final FloatingActionButton FABX = (FloatingActionButton)findViewById(R.id.fabx);
         final Button datePicker = (Button) findViewById(R.id.button5);
         topText = (TextView) findViewById(R.id.textView);
         database = FirebaseDatabase.getInstance();
@@ -118,6 +119,7 @@ public class ItemCreditList extends AppCompatActivity {
                 quantiy.clear();
                 total.clear();
                 totalSum = 0.0;
+                prices.clear();
                 for(DataSnapshot items:dataSnapshot.getChildren()){
                     CreditItemGetter tmp = items.getValue(CreditItemGetter.class);
                     if(tmp != null) {
@@ -141,6 +143,30 @@ public class ItemCreditList extends AppCompatActivity {
             }
         });
         if(flag == false) {
+            FABX.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    AlertDialog alertDialog = new AlertDialog.Builder(ItemCreditList.this).create();
+                    alertDialog.setTitle("ลบบิล");
+                    alertDialog.setMessage("ลบบิลวันที่ "+date+"\n แน่ใจหรือไม่?");
+                    alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "ลบ",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    myRef.child(id).child("bills").child(date).removeValue();
+                                    dialog.dismiss();
+                                    finish();
+                                }
+                            });
+                    alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "ยกเลิก", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialog.dismiss();
+                        }
+                    });
+                    alertDialog.show();
+                    return false;
+                }
+            });
             FAB1.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
@@ -189,6 +215,7 @@ public class ItemCreditList extends AppCompatActivity {
                     startActivity(i);
                 }
             });
+
             listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                 @Override
                 public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -248,6 +275,30 @@ public class ItemCreditList extends AppCompatActivity {
                 }
             });
             bottomBox.setBackgroundColor(Color.parseColor("#84DE02"));
+            FABX.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    AlertDialog alertDialog = new AlertDialog.Builder(ItemCreditList.this).create();
+                    alertDialog.setTitle("ลบบิล");
+                    alertDialog.setMessage("ลบบิลวันที่ "+date+"\n แน่ใจหรือไม่?");
+                    alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "ลบ",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    myRef.child(id).child("bills").child(date).removeValue();
+                                    dialog.dismiss();
+                                    finish();
+                                }
+                            });
+                    alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "ยกเลิก", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialog.dismiss();
+                        }
+                    });
+                    alertDialog.show();
+                    return false;
+                }
+            });
         }
 
 
@@ -274,7 +325,7 @@ public class ItemCreditList extends AppCompatActivity {
 
     }
     private void openDialog(final String pname, final Double cost){
-        //Toast.makeText(ItemCreditList.this,pname,Toast.LENGTH_SHORT).show();
+        //Toast.makeText(ItemCreditList.this,"dialog is opened product name is"+pname,Toast.LENGTH_SHORT).show();
         LayoutInflater li = LayoutInflater.from(ItemCreditList.this);
         View promptsView = li.inflate(R.layout.custom_dialog, null);
         final TextView dateText = (TextView) promptsView.findViewById(R.id.textView2);
@@ -305,6 +356,12 @@ public class ItemCreditList extends AppCompatActivity {
         alertDialogBuilder.setView(promptsView);
         alertDialogBuilder
                 .setCancelable(true)
+                .setNeutralButton("Delete", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        myRef.child(id).child("bills").child(date).child("items").child(pname).removeValue();
+                    }
+                })
                 .setPositiveButton("OK",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog,int did) {

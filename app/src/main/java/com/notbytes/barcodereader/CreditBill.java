@@ -29,6 +29,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Random;
 
+import static android.view.View.INVISIBLE;
+
 public class CreditBill extends AppCompatActivity {
     FirebaseDatabase database;
     ArrayList<String> names = new ArrayList<String>();
@@ -47,9 +49,11 @@ public class CreditBill extends AppCompatActivity {
         final ListView listView = (ListView)findViewById(R.id.listview);
         Button datePicker = (Button) findViewById(R.id.button5);
         datePicker.setVisibility(View.GONE);
+        final FloatingActionButton FABX = (FloatingActionButton)findViewById(R.id.fabx);
+        FABX.setVisibility(INVISIBLE);
         FloatingActionButton FAB1 = (FloatingActionButton)findViewById(R.id.floatingActionButton);
         fab = (FloatingActionButton) findViewById(R.id.floatingActionButton2);
-        FAB1.setVisibility(View.INVISIBLE);
+        FAB1.setVisibility(INVISIBLE);
         database = FirebaseDatabase.getInstance();
         final DatabaseReference myRef = database.getReference("creditList");
         final ProgressDialog dialog = new ProgressDialog(CreditBill.this);

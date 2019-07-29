@@ -77,23 +77,35 @@
                 android:text="0"
                 android:textColor="#000000"
                 android:textSize="30sp" />
+
         </LinearLayout>
 
         <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fabx"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_gravity="bottom|center|right"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="180dp"
+            android:clickable="true"
+            app:backgroundTint="#FFCCBC"
+            app:srcCompat="@android:drawable/ic_delete" />
+
+        <android.support.design.widget.FloatingActionButton
             android:id="@+id/floatingActionButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:layout_gravity="bottom|center|right"
             android:layout_marginRight="20dp"
             android:layout_marginBottom="100dp"
             android:clickable="true"
-            app:backgroundTint="#E1E57373"
-            app:srcCompat="@android:drawable/ic_menu_save" />
+            app:backgroundTint="#FFCA28"
+            app:srcCompat="@drawable/ic_dollar" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/floatingActionButton2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:layout_gravity="bottom|right"
             android:layout_marginRight="20dp"
             android:layout_marginBottom="20dp"

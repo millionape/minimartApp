@@ -42,6 +42,14 @@ public class OftenProduct extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.b1).setOnClickListener(this);
         findViewById(R.id.b2).setOnClickListener(this);
         findViewById(R.id.b3).setOnClickListener(this);
+
+        findViewById(R.id.b4).setOnClickListener(this);
+        findViewById(R.id.b5).setOnClickListener(this);
+        findViewById(R.id.b6).setOnClickListener(this);
+        findViewById(R.id.b7).setOnClickListener(this);
+        findViewById(R.id.b8).setOnClickListener(this);
+        findViewById(R.id.b9).setOnClickListener(this);
+
         findViewById(R.id.a1).setOnClickListener(this);
         findViewById(R.id.a2).setOnClickListener(this);
         findViewById(R.id.a3).setOnClickListener(this);
@@ -85,6 +93,24 @@ public class OftenProduct extends AppCompatActivity implements View.OnClickListe
             case R.id.b3:
                 openDialog("8850999111001",view.getId());
                 break;
+            case R.id.b4:
+                openDialog("8850571920649",view.getId());
+                break;
+            case R.id.b5:
+                openDialog("8850999143002",view.getId());
+                break;
+            case R.id.b6:
+                openDialog("8851993623019",view.getId());
+                break;
+            case R.id.b7:
+                openDialog("8850999113005",view.getId());
+                break;
+            case R.id.b8:
+                openDialog("8850999009674",view.getId());
+                break;
+            case R.id.b9:
+                openDialog("7851994625013",view.getId());
+                break;
             case R.id.a1:
                 openDialog("8852388000613",view.getId());
                 break;
@@ -99,10 +125,10 @@ public class OftenProduct extends AppCompatActivity implements View.OnClickListe
                 openDialog("8855155000724",view.getId());
                 break;
             case R.id.a5:
-                openDialog("003",view.getId());
+                openDialog("12003",view.getId());
                 break;
             case R.id.a6:
-                openDialog("001",view.getId());
+                openDialog("12001",view.getId());
                 break;
             case R.id.a7:
                 openDialog("8854795000491",view.getId());

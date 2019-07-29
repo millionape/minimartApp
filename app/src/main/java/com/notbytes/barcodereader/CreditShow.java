@@ -37,6 +37,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import static android.view.View.INVISIBLE;
+
 public class CreditShow extends AppCompatActivity {
     public String creditID;
     public String whosCredit;
@@ -53,6 +55,8 @@ public class CreditShow extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         final DatabaseReference myRef = database.getReference("creditList");
         TextView textView = (TextView) findViewById(R.id.textView);
+        final FloatingActionButton FABX = (FloatingActionButton)findViewById(R.id.fabx);
+        FABX.setVisibility(INVISIBLE);
         fab = (FloatingActionButton) findViewById(R.id.floatingActionButton2);
         FloatingActionButton FAB1 = (FloatingActionButton)findViewById(R.id.floatingActionButton);
         FAB1.setVisibility(View.INVISIBLE);
